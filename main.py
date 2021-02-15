@@ -34,6 +34,7 @@ sh = gc.open('options_trading_'+strikedate)
 
 sh.share('yuan.huang10@gmail.com', perm_type='user', role='writer')
 sh.share('minshichen@gmail.com', perm_type='user', role='writer')
+sh.share('yixianwen@gmail.com', perm_type='user', role='writer')
 
 
 
