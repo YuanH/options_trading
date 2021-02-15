@@ -23,7 +23,7 @@ def upload_to_gspreadsheet(df,sheetname,strikedate):
 
 
 
-tickers = ['DAL','MSFT','AAPL','NVDA','FB','ADBE','HD','AMD','MA','NIO','MCD','AMC','GME','PFE','TSM']
+tickers = ['DAL','MSFT','AAPL','NVDA','FB','ADBE','HD','AMD','MA','NIO','MCD','TSM']
 strikedate = "2021-02-19"
 TYPE = "put"
 filename = strikedate+"_"+TYPE+".xlsx"
