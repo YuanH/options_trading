@@ -29,17 +29,12 @@ TYPE = "put"
 filename = strikedate+"_"+TYPE+".xlsx"
 
 gc = gspread.service_account(filename='./credentials.json')
-sh = gc.create('options_trading_'+strikedate)
+sh = gc.open('options_trading_'+strikedate)
+#sh = gc.create('options_trading_'+strikedate)
 
 sh.share('yuan.huang10@gmail.com', perm_type='user', role='writer')
 sh.share('minshichen@gmail.com', perm_type='user', role='writer')
-"""
-data = getOptionsTable('DAL', strikedate, TYPE)
-data['lastTradeDate'] = data['lastTradeDate'].dt.strftime('%Y%m%d%H%M%S')
-sheetname = 'DAL'+'_'+TYPE
-worksheet=sh.add_worksheet(sheetname,rows='100',cols='20')
-worksheet.update([data.columns.values.tolist()] + data.values.tolist())
-"""
+
 
 
 for ticker in tickers:
