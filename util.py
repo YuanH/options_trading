@@ -15,8 +15,11 @@ def businessDayDiff(strikeDate):
 def calculate_return(options_table,bid,strikeDate):
     options_table['priceNow'] = bid
     options_table['dailyReturn'] = options_table['bid']/options_table[['strike','priceNow']].min(axis=1)/businessDayDiff(strikeDate)
-    options_table['annualizedReturn'] = options_table['dailyReturn']*251
-    options_table['strikeDistance'] = options_table['strike']/options_table['priceNow']-1
+    #options_table['annualizedReturn'] = str(options_table['dailyReturn']*251*100)+'%'
+    options_table['annualizedReturn'] = options_table['dailyReturn']*251*100
+    options_table['strikeDistance'] = (options_table['strike']/options_table['priceNow']-1)*100
+    #options_table['strikeDistance'] = str((options_table['strike']/options_table['priceNow']-1)*100)+'%'
+    print(options_table)
     return options_table    
 
 
@@ -42,7 +45,7 @@ def getOptionsTable(ticker,strike_date,TYPE=None):
 
 
 if __name__ == "__main__":
-
+    pd.set_option('display.max_rows', None)
     parser = argparse.ArgumentParser()
     parser.add_argument("-t", "--ticker", help="ticker")
     parser.add_argument("-s", "--strikedate", help = "strike date (YYYY-MM-DD)")

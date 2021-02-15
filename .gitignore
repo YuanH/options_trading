@@ -2,3 +2,4 @@
 *.xlsx
 __pycache__
 *.swp
+credentials.json
