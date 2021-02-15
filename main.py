@@ -29,8 +29,10 @@ TYPE = "put"
 filename = strikedate+"_"+TYPE+".xlsx"
 
 gc = gspread.service_account(filename='./credentials.json')
-sh = gc.open('options_trading_'+strikedate)
-#sh = gc.create('options_trading_'+strikedate)
+try:
+    sh = gc.open('options_trading_'+strikedate)
+except:
+    sh = gc.create('options_trading_'+strikedate)
 
 sh.share('yuan.huang10@gmail.com', perm_type='user', role='writer')
 sh.share('minshichen@gmail.com', perm_type='user', role='writer')
@@ -43,8 +45,12 @@ for ticker in tickers:
     data['lastTradeDate'] = data['lastTradeDate'].dt.strftime('%Y%m%d%H%M%S')
     data = data.replace(np.nan, '')
     sheetname = ticker+'_'+TYPE
-    #worksheet=sh.add_worksheet(sheetname,rows='100',cols='20')
-    worksheet = sh.worksheet(sheetname)
+    #
+    try:
+        worksheet = sh.worksheet(sheetname)
+    except:
+        worksheet=sh.add_worksheet(sheetname,rows='100',cols='20')
+
     worksheet.update([data.columns.values.tolist()] + data.values.tolist())
 
 #sh.del_worksheet("Sheet1")
