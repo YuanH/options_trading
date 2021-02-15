@@ -46,7 +46,7 @@ for ticker in tickers:
     worksheet = sh.worksheet(sheetname)
     worksheet.update([data.columns.values.tolist()] + data.values.tolist())
 
-sh.del_worksheet("Sheet1")
+#sh.del_worksheet("Sheet1")
 
 
 """
