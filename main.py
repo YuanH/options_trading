@@ -50,8 +50,10 @@ for ticker in tickers:
         worksheet = sh.worksheet(sheetname)
     except:
         worksheet=sh.add_worksheet(sheetname,rows='100',cols='20')
-
-    worksheet.update([data.columns.values.tolist()] + data.values.tolist())
+    try:
+        worksheet.update([data.columns.values.tolist()] + data.values.tolist())
+    except:
+        continue
 
 #sh.del_worksheet("Sheet1")
 
