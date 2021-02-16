@@ -14,7 +14,7 @@ def businessDayDiff(strikeDate):
 
 def calculate_return(options_table,bid,strikeDate):
     options_table['priceNow'] = bid
-    options_table['dailyReturn'] = options_table['bid']/options_table[['strike','priceNow']].min(axis=1)/businessDayDiff(strikeDate)
+    options_table['dailyReturn'] = options_table['lastPrice']/options_table[['strike','priceNow']].min(axis=1)/businessDayDiff(strikeDate)
     #options_table['annualizedReturn'] = str(options_table['dailyReturn']*251*100)+'%'
     options_table['annualizedReturn'] = options_table['dailyReturn']*251*100
     options_table['strikeDistance'] = (options_table['strike']/options_table['priceNow']-1)*100
