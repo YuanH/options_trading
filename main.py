@@ -10,7 +10,7 @@ import numpy as np
 def upload_to_gspreadsheet(df,sheetname,strikedate):
 
 
-    gc = gspread.service_account(filename='./credentials.json')
+    gc = gspread.service_account(filename='/home/repositories/options_trading/credentials.json')
 
 
     sh = gc.create('options_trading'+strikedate)
@@ -34,9 +34,9 @@ try:
 except:
     sh = gc.create('options_trading_'+strikedate)
 
-sh.share('yuan.huang10@gmail.com', perm_type='user', role='writer')
-sh.share('minshichen@gmail.com', perm_type='user', role='writer')
-sh.share('yixianwen@gmail.com', perm_type='user', role='writer')
+#sh.share('yuan.huang10@gmail.com', perm_type='user', role='writer')
+#sh.share('minshichen@gmail.com', perm_type='user', role='writer')
+#sh.share('yixianwen@gmail.com', perm_type='user', role='writer')
 
 
 
