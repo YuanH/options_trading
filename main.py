@@ -7,54 +7,49 @@ import subprocess
 import gspread
 import numpy as np
 
-def upload_to_gspreadsheet(df,sheetname,strikedate):
-
-
-    gc = gspread.service_account(filename='/home/repositories/options_trading/credentials.json')
-
-
-    sh = gc.create('options_trading'+strikedate)
-    sh.share('yuan.huang10@gmail.com', perm_type='user', role='writer')
-
-    worksheet=sh.add_worksheet(sheetname,rows='100',cols='20')
-    worksheet = sh.worksheet(sheetname)
-    worksheet.update([df.columns.values.tolist()] + df.values.tolist())
 
 
 
-
-tickers = ['DAL','MSFT','AAPL','NVDA','FB','ADBE','HD','AMD','MA','NIO','MCD','TSM','TSLA','SQ','ROKU','PLTR','PYPL','ABNB']
+tickers = {'DAL':'put','MSFT':'put','AAPL':'both','NVDA':'put','FB':"put",'ADBE':"put",
+            'AMD':"put",'MA':"put",'NIO':"put",'MCD':"put",'TSM':"put",'TSLA':"put",'SQ':"put",
+            'ROKU':"put",'PLTR':"put",'PYPL':"put",'ABNB':'put','APT':"put"}
 strikedate = "2021-02-19"
 TYPE = "put"
-filename = strikedate+"_"+TYPE+".xlsx"
 
+
+# Creating Google Spreadsheet if it doesn't already exist
 gc = gspread.service_account(filename='./credentials.json')
 try:
     sh = gc.open('options_trading_'+strikedate)
 except:
     sh = gc.create('options_trading_'+strikedate)
-
-#sh.share('yuan.huang10@gmail.com', perm_type='user', role='writer')
-#sh.share('minshichen@gmail.com', perm_type='user', role='writer')
-#sh.share('yixianwen@gmail.com', perm_type='user', role='writer')
+    sh.share('yuan.huang10@gmail.com', perm_type='user', role='writer')
+    sh.share('minshichen@gmail.com', perm_type='user', role='writer')
+    sh.share('yixianwen@gmail.com', perm_type='user', role='writer')
 
 
 
 for ticker in tickers:
-    try:
-        data = getOptionsTable(ticker, strikedate, TYPE)
-        data['lastTradeDate'] = data['lastTradeDate'].dt.strftime('%Y%m%d%H%M%S')
-        data = data.replace(np.nan, '')
+    if tickers[ticker] == "both":
+        data = getOptionsTable(ticker, strikedate, 'put')
         sheetname = ticker+'_'+TYPE
-    except:
-        continue
-    #
-    try:
-        worksheet = sh.worksheet(sheetname)
-    except:
-        worksheet=sh.add_worksheet(sheetname,rows='100',cols='20')
+        upload_to_gspreadsheet(data, sheetname, sh)
 
-    worksheet.update([data.columns.values.tolist()] + data.values.tolist())
+        data = getOptionsTable(ticker, strikedate, 'call')
+        sheetname = ticker+'_'+TYPE
+        upload_to_gspreadsheet(data, sheetname, sh)
+    else:
+        try:
+            TYPE = tickers[ticker]
+            data = getOptionsTable(ticker, strikedate, TYPE)
+            sheetname = ticker+'_'+TYPE
+            upload_to_gspreadsheet(data, sheetname, sh)
+        except:
+            continue
+    #
+
+    
+
 
 
 #sh.del_worksheet("Sheet1")
