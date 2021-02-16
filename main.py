@@ -41,19 +41,21 @@ sh.share('yixianwen@gmail.com', perm_type='user', role='writer')
 
 
 for ticker in tickers:
-    data = getOptionsTable(ticker, strikedate, TYPE)
-    data['lastTradeDate'] = data['lastTradeDate'].dt.strftime('%Y%m%d%H%M%S')
-    data = data.replace(np.nan, '')
-    sheetname = ticker+'_'+TYPE
+    try:
+        data = getOptionsTable(ticker, strikedate, TYPE)
+        data['lastTradeDate'] = data['lastTradeDate'].dt.strftime('%Y%m%d%H%M%S')
+        data = data.replace(np.nan, '')
+        sheetname = ticker+'_'+TYPE
+    except:
+        continue
     #
     try:
         worksheet = sh.worksheet(sheetname)
     except:
         worksheet=sh.add_worksheet(sheetname,rows='100',cols='20')
-    try:
-        worksheet.update([data.columns.values.tolist()] + data.values.tolist())
-    except:
-        continue
+
+    worksheet.update([data.columns.values.tolist()] + data.values.tolist())
+
 
 #sh.del_worksheet("Sheet1")
 
