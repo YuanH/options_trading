@@ -13,7 +13,7 @@ import numpy as np
 tickers = {'DAL':'put','MSFT':'put','AAPL':'both','NVDA':'put','FB':"put",'ADBE':"put",
             'AMD':"put",'MA':"put",'NIO':"put",'MCD':"put",'TSM':"put",'TSLA':"put",'SQ':"put",
             'ROKU':"put",'PLTR':"put",'PYPL':"put",'ABNB':'put','APT':"put"}
-strikedate = "2021-02-19"
+strikedate = "2021-02-26"
 TYPE = "put"
 
 
@@ -32,11 +32,11 @@ except:
 for ticker in tickers:
     if tickers[ticker] == "both":
         data = getOptionsTable(ticker, strikedate, 'put')
-        sheetname = ticker+'_'+TYPE
+        sheetname = ticker+'_put'
         upload_to_gspreadsheet(data, sheetname, sh)
 
         data = getOptionsTable(ticker, strikedate, 'call')
-        sheetname = ticker+'_'+TYPE
+        sheetname = ticker+'_call'
         upload_to_gspreadsheet(data, sheetname, sh)
     else:
         try:
